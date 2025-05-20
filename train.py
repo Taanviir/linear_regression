@@ -1,12 +1,6 @@
-# estimate_price.py
+# train.py
 
-
-def estimate_price(mileage: int | float) -> float:
-    theta0 = 0
-    theta1 = 0
-
-    price = theta0 + (theta1 * mileage)
-    return price
+from utils import estimate_price
 
 
 def main():
@@ -16,7 +10,7 @@ def main():
         print("Error: Invalid Type entered.")
         return
 
-    estimate_price(mileage)
+    price = estimate_price(mileage)
 
 
 if __name__ == "__main__":

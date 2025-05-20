@@ -1,11 +1,9 @@
-# linear_regression.py
+# predict.py
 
 import pandas as pd
 
 
 def ft_linear_regression():
-    theta0 = 0
-    theta1 = 0
 
     data = pd.read_csv("data.csv")
     print(data)
