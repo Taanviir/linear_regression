@@ -4,6 +4,8 @@ import json
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib as mpl
+from load_csv import load
 
 
 def ft_linear_regression() -> dict:
@@ -13,7 +15,8 @@ def ft_linear_regression() -> dict:
     theta1 = 0
 
     # get data
-    data = pd.read_csv("data.csv")
+    file = "data/data.csv"
+    data = load(file)
     print(data)
 
     # perform linear regression on data
@@ -26,14 +29,25 @@ def ft_linear_regression() -> dict:
     for i in range(m):
         f[i] = theta0 + theta1 * mileage[i]
 
+    plot_graph(mileage, price)
+
+    return {"theta0": theta0, "theta1": theta1}
+
+
+def plot_graph(mileage, price):
     # plt.plot(mileage, f, c="red")
     plt.scatter(mileage, price, marker="x")
     plt.xlabel("Mileage (in km)")
     plt.ylabel("Price (in $)")
     plt.tight_layout()
-    plt.savefig("figure.jpg")
 
-    return {"theta0": theta0, "theta1": theta1}
+    is_headless = mpl.get_backend().lower() == "agg"
+    if is_headless:
+        out_png = "figure.png"
+        plt.savefig(out_png)
+        print(f"Headless mode detected. Plot saved to '{out_png}'.")
+    else:
+        plt.show()
 
 
 def main():
