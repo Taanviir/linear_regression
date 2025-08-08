@@ -7,16 +7,16 @@ import numpy as np
 from load_csv import load
 
 
-def plot_graph(mileage, price, theta0, theta1):
+def plot_graph(x: np.ndarray, y: np.ndarray, theta0: float, theta1: float):
     """Plot scatter points and regression line."""
 
-    plt.scatter(mileage, price, marker="x", label="Data Points")
+    plt.scatter(x, y, marker="x", label="Data Points")
 
-    regression_line = theta0 + (theta1 * mileage)
-    plt.plot(mileage, regression_line, c="red", label="Regression Line")
+    regression_line = theta0 + (theta1 * x)
+    plt.plot(x, regression_line, c="red", label="Regression Line")
 
-    plt.xlabel("Mileage (normalized)")
-    plt.ylabel("Price (normalized)")
+    plt.xlabel("Mileage (in kms)")
+    plt.ylabel("Price (in $)")
     plt.legend()
     plt.tight_layout()
 
@@ -51,7 +51,7 @@ def gradient_descent(
     y: np.ndarray,
     learning_rate: float = 0.001,
     iterations: int = 10_000,
-):
+) -> tuple[float | float]:
     """
     Perform gradient descent to find optimal theta0 and theta1.
     """
@@ -64,23 +64,27 @@ def gradient_descent(
         theta1 -= learning_rate * grad_theta1
         theta0 -= learning_rate * grad_theta0
 
-    return np.array([theta0, theta1])
+    return theta0, theta1
 
 
-def train_model(mileage: np.ndarray, price: np.ndarray) -> np.ndarray:
-    """
-    Train linear regression model:
-    estimatePrice(mileage) = theta0 + (theta1 * mileage)
-    """
+def train_model(x: np.ndarray, y: np.ndarray) -> np.ndarray:
+    """Train linear regression model."""
 
-    params = gradient_descent(mileage, price)
-    theta0, theta1 = params
+    tmp_th0, tmp_th1 = gradient_descent(normalize(x), normalize(y))
+
+    y_std = y.std()
+    y_mean = y.mean()
+    x_std = x.std()
+    x_mean = x.mean()
+
+    theta0 = y_mean + y_std * tmp_th0 - (y_std * tmp_th1 * x_mean) / x_std
+    theta1 = (y_std * tmp_th1) / x_std
 
     print("Trained model with parameters:")
     print(f"theta0 = {theta0}")
     print(f"theta1 = {theta1}")
 
-    return params
+    return np.array([theta0, theta1])
 
 
 def normalize(data: np.ndarray) -> np.ndarray:
@@ -88,7 +92,7 @@ def normalize(data: np.ndarray) -> np.ndarray:
     return (data - data.mean()) / data.std()
 
 
-def main() -> None:
+def main():
     """Train linear model."""
 
     file = "data/data.csv"
@@ -96,8 +100,8 @@ def main() -> None:
     if data is None:
         return
 
-    mileage = normalize(data["km"].values.astype(float))
-    price = normalize(data["price"].values.astype(float))
+    mileage = data["km"].values.astype(float)
+    price = data["price"].values.astype(float)
 
     params = train_model(mileage, price)
     np.save("model.npy", params)
