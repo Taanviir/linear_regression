@@ -1,24 +1,23 @@
-# predict.py
+# estimate.py
 
-import json
-from json import JSONDecodeError
+import numpy as np
 
 
-def load_model() -> tuple[int | float, int | float]:
+def load_model() -> tuple[float, float]:
     """
-    Load theta0 and theta1 from model.json file.
-    Return default values if file is missing or invalid.
+    Load theta0 and theta1 from 'model.npy' file.
+    Return default values (0,0) if file is missing or invalid.
     """
-
     try:
-        with open("model.json", "r") as file:
-            params = json.load(file)
-            return params.get("theta0", 0), params.get("theta1", 0)
+        params = np.load("model.npy")
+        if len(params) != 2:
+            raise ValueError("Model parameter array length is not 2.")
+        return float(params[0]), float(params[1])
 
-    except (FileNotFoundError, JSONDecodeError):
-        print("Error: Failed to load model.")
+    except (FileNotFoundError, ValueError) as e:
+        print(f"Error: Failed to load model. {e}")
         print("Setting theta0 and theta1 to defaults.\n")
-        return 0, 0
+        return 0.0, 0.0
 
 
 def estimate_price(mileage: float, theta0: float, theta1: float) -> float:
@@ -36,10 +35,9 @@ def main():
     theta0, theta1 = load_model()
 
     try:
-        mileage = int(input("Enter the mileage of the car (in km): "))
-
+        mileage = float(input("Enter the mileage of the car (in km): "))
     except ValueError:
-        print("Error: Invalid type entered.")
+        print("Error: Invalid input for mileage.")
         return
 
     print()
