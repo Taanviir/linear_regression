@@ -89,7 +89,7 @@ def normalize(data: np.ndarray) -> np.ndarray:
 
 
 def main() -> None:
-    """ """
+    """Train linear model."""
 
     file = "data/data.csv"
     data = load(file)
