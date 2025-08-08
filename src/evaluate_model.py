@@ -10,7 +10,7 @@ def evaluate_model(
     y: np.ndarray,
     theta0: float,
     theta1: float,
-) -> None:
+):
     """Evaluate regression model."""
 
     print("\n===== MODEL EVALUATION =====")
@@ -36,11 +36,6 @@ def evaluate_model(
     print(f"R-squared (R²): {r2:.4f}")
 
 
-def normalize(data: np.ndarray) -> np.ndarray:
-    """Return normalized data (mean = 0, std = 1)."""
-    return (data - data.mean()) / data.std()
-
-
 def load_model() -> tuple[float, float]:
     """
     Load theta0 and theta1 from 'model.npy' file.
@@ -58,7 +53,7 @@ def load_model() -> tuple[float, float]:
         return 0.0, 0.0
 
 
-def main() -> None:
+def main():
     """Evaluate linear model."""
 
     # Load model parameters
@@ -72,16 +67,13 @@ def main() -> None:
     if data is None:
         return
 
-    # Normalize data
-    mileage = normalize(data["km"].values.astype(float))
-    price = normalize(data["price"].values.astype(float))
+    # Get data
+    mileage = data["km"].values.astype(float)
+    price = data["price"].values.astype(float)
 
     # Evaluate model
     evaluate_model(mileage, price, theta0, theta1)
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\nKeyboardInterrupt received, closing program...")
+    main()
