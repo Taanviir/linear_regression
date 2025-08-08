@@ -1,6 +1,7 @@
-# train.py
+# predict.py
 
-from json import load, JSONDecodeError
+import json
+from json import JSONDecodeError
 
 
 def load_model() -> tuple[int | float, int | float]:
@@ -11,7 +12,7 @@ def load_model() -> tuple[int | float, int | float]:
 
     try:
         with open("model.json", "r") as file:
-            params = load(file)
+            params = json.load(file)
             return params.get("theta0", 0), params.get("theta1", 0)
 
     except (FileNotFoundError, JSONDecodeError):
