@@ -1,12 +1,15 @@
 # train.py
 
 import numpy as np
+import os
 
 from utils.load_csv import load_csv
 from utils.plot import plot_graph
 
 
-MODEL_FILE = "model.npy"
+OUTPUT_DIR = "output"
+MODEL_FILE = os.path.join(OUTPUT_DIR, "model.npy")
+FIGURE_FILE = os.path.join(OUTPUT_DIR, "figure.png")
 
 
 def compute_gradients(
@@ -81,13 +84,17 @@ def main():
     if data is None:
         return
 
+    # Create output directory if it doesn't exist
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
+
     mileage = data["km"].values.astype(float)
     price = data["price"].values.astype(float)
 
     params = train_model(mileage, price)
     np.save(MODEL_FILE, params)
+    print(f"Model parameters saved to '{MODEL_FILE}'.")
 
-    plot_graph(mileage, price, *params)
+    plot_graph(mileage, price, *params, save_path=FIGURE_FILE)
 
 
 if __name__ == "__main__":

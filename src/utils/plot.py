@@ -19,6 +19,7 @@ def plot_graph(
     y: np.ndarray,
     theta0: float,
     theta1: float,
+    save_path: str | None = None,
 ) -> None:
     """Plot scatter points and regression line."""
 
@@ -31,7 +32,10 @@ def plot_graph(
     plt.legend()
     plt.tight_layout()
 
-    if mpl.get_backend().lower() == "agg":  # Headless mode
+    if save_path is not None:
+        plt.savefig(save_path)
+        print(f"Plot saved to '{save_path}'.")
+    elif mpl.get_backend().lower() == "agg":  # Headless mode
         out_png = "figure.png"
         plt.savefig(out_png)
         print(f"Headless mode detected. Plot saved to '{out_png}'.")
