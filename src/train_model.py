@@ -37,9 +37,7 @@ def gradient_descent(
     learning_rate: float = 0.001,
     iterations: int = 10_000,
 ) -> tuple[float | float]:
-    """
-    Perform gradient descent to find optimal theta0 and theta1.
-    """
+    """Perform gradient descent to find optimal theta0 and theta1."""
 
     theta0 = 0.0
     theta1 = 0.0
