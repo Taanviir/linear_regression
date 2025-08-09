@@ -1,9 +1,8 @@
 # estimate.py
 
+import sys
+
 from utils.load_model import load_model
-
-
-MODEL_FILE = "model.npy"
 
 
 def estimate_price(mileage: float, theta0: float, theta1: float) -> float:
@@ -18,7 +17,13 @@ def estimate_price(mileage: float, theta0: float, theta1: float) -> float:
 def main():
     """Estimate the price of a car based on mileage using a linear model."""
 
-    theta0, theta1 = load_model(MODEL_FILE)
+    if len(sys.argv) != 2:
+        print("Usage: python evaluate_model.py <model_file>")
+        sys.exit(1)
+
+    model_file = sys.argv[1]
+
+    theta0, theta1 = load_model(model_file)
 
     try:
         mileage = float(input("Enter the mileage of the car (in km): "))
@@ -33,4 +38,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("KeyboardInterrupt received, closing program...")
