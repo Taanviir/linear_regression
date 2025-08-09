@@ -43,11 +43,13 @@ def evaluate_model(
 
 def main():
     """Evaluate linear model using the params."""
-    if len(sys.argv) != 2:
+
+    model_file = None
+    if len(sys.argv) == 2:
+        model_file = sys.argv[1]
+    elif len(sys.argv) > 2:
         print("Usage: python evaluate_model.py <model_file>")
         sys.exit(1)
-
-    model_file = sys.argv[1]
 
     # Load data
     data_result = extract_mileage_and_price(DATA_FILE)

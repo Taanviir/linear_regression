@@ -17,11 +17,12 @@ def estimate_price(mileage: float, theta0: float, theta1: float) -> float:
 def main():
     """Estimate the price of a car based on mileage using a linear model."""
 
-    if len(sys.argv) != 2:
-        print("Usage: python evaluate_model.py <model_file>")
+    model_file = None
+    if len(sys.argv) == 2:
+        model_file = sys.argv[1]
+    elif len(sys.argv) > 2:
+        print("Usage: python estimate_price.py [<model_file>]")
         sys.exit(1)
-
-    model_file = sys.argv[1]
 
     theta0, theta1 = load_model(model_file)
 
