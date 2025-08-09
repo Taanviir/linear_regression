@@ -1,10 +1,10 @@
-# ex00: load_csv.py
+# load_csv.py
 
 import pandas as pd
 from pandas import DataFrame
 
 
-def load(path: str) -> DataFrame | None:
+def load_csv(path: str) -> DataFrame | None:
     """
     Loads the given CSV file path as a pandas DataFrame.
 

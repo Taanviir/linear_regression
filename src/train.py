@@ -1,31 +1,12 @@
 # train.py
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
 import numpy as np
 
-from load_csv import load
+from utils.load_csv import load_csv
+from utils.plot import plot_graph
 
 
-def plot_graph(x: np.ndarray, y: np.ndarray, theta0: float, theta1: float):
-    """Plot scatter points and regression line."""
-
-    plt.scatter(x, y, marker="x", label="Data Points")
-
-    regression_line = theta0 + (theta1 * x)
-    plt.plot(x, regression_line, c="red", label="Regression Line")
-
-    plt.xlabel("Mileage (in kms)")
-    plt.ylabel("Price (in $)")
-    plt.legend()
-    plt.tight_layout()
-
-    if mpl.get_backend().lower() == "agg":  # Headless mode
-        out_png = "figure.png"
-        plt.savefig(out_png)
-        print(f"Headless mode detected. Plot saved to '{out_png}'.")
-    else:
-        plt.show()
+MODEL_FILE = "model.npy"
 
 
 def compute_gradients(
@@ -93,10 +74,10 @@ def normalize(data: np.ndarray) -> np.ndarray:
 
 
 def main():
-    """Train linear model."""
+    """Train linear model and save params to MODEL_FILE."""
 
-    file = "data/data.csv"
-    data = load(file)
+    FILE = "data/data.csv"
+    data = load_csv(FILE)
     if data is None:
         return
 
@@ -104,7 +85,7 @@ def main():
     price = data["price"].values.astype(float)
 
     params = train_model(mileage, price)
-    np.save("model.npy", params)
+    np.save(MODEL_FILE, params)
 
     plot_graph(mileage, price, *params)
 

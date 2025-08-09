@@ -1,23 +1,9 @@
 # estimate.py
 
-import numpy as np
+from utils.load_model import load_model
 
 
-def load_model() -> tuple[float, float]:
-    """
-    Load theta0 and theta1 from 'model.npy' file.
-    Return default values (0,0) if file is missing or invalid.
-    """
-    try:
-        params = np.load("model.npy")
-        if len(params) != 2:
-            raise ValueError("Model parameter array length is not 2.")
-        return float(params[0]), float(params[1])
-
-    except (FileNotFoundError, ValueError) as e:
-        print(f"Error: Failed to load model. {e}")
-        print("Setting theta0 and theta1 to defaults.\n")
-        return 0.0, 0.0
+MODEL_FILE = "model.npy"
 
 
 def estimate_price(mileage: float, theta0: float, theta1: float) -> float:
@@ -32,7 +18,7 @@ def estimate_price(mileage: float, theta0: float, theta1: float) -> float:
 def main():
     """Estimate the price of a car based on mileage using a linear model."""
 
-    theta0, theta1 = load_model()
+    theta0, theta1 = load_model(MODEL_FILE)
 
     try:
         mileage = float(input("Enter the mileage of the car (in km): "))
