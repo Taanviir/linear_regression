@@ -1,6 +1,7 @@
 # evaluate_model.py
 
 import numpy as np
+import sys
 
 from utils.load_csv import load_csv
 from utils.load_model import load_model
@@ -39,6 +40,11 @@ def evaluate_model(
 
 def main():
     """Evaluate linear model using the params."""
+    if len(sys.argv) != 2:
+        print("Usage: python evaluate_model.py <model_file>")
+        sys.exit(1)
+
+    model_file = sys.argv[1]
 
     # Load data
     FILE = "data/data.csv"
@@ -51,7 +57,7 @@ def main():
     price = data["price"].values.astype(float)
 
     # Load model parameters
-    theta0, theta1 = load_model()
+    theta0, theta1 = load_model(model_file)
     print("Loaded model parameters:")
     print(f"theta0 = {theta0:.4f}, theta1 = {theta1:.4f}")
 
