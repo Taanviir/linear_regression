@@ -3,8 +3,11 @@
 import numpy as np
 import sys
 
-from utils.load_csv import load_csv
+from utils.data_extraction import extract_mileage_and_price
 from utils.load_model import load_model
+
+
+DATA_FILE = "data/data.csv"
 
 
 def evaluate_model(
@@ -47,14 +50,11 @@ def main():
     model_file = sys.argv[1]
 
     # Load data
-    FILE = "data/data.csv"
-    data = load_csv(FILE)
-    if data is None:
+    data_result = extract_mileage_and_price(DATA_FILE)
+    if data_result is None:
         return
 
-    # Get data
-    mileage = data["km"].values.astype(float)
-    price = data["price"].values.astype(float)
+    mileage, price = data_result
 
     # Load model parameters
     theta0, theta1 = load_model(model_file)

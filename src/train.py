@@ -3,13 +3,14 @@
 import numpy as np
 import os
 
-from utils.load_csv import load_csv
+from utils.data_extraction import extract_mileage_and_price
 from utils.plot import plot_graph
 
 
 OUTPUT_DIR = "output"
 MODEL_FILE = os.path.join(OUTPUT_DIR, "model.npy")
 FIGURE_FILE = os.path.join(OUTPUT_DIR, "figure.png")
+DATA_FILE = "data/data.csv"
 
 
 def compute_gradients(
@@ -79,16 +80,15 @@ def normalize(data: np.ndarray) -> np.ndarray:
 def main():
     """Train linear model and save params to MODEL_FILE."""
 
-    FILE = "data/data.csv"
-    data = load_csv(FILE)
-    if data is None:
-        return
-
     # Create output directory if it doesn't exist
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    mileage = data["km"].values.astype(float)
-    price = data["price"].values.astype(float)
+    # Extract data from CSV
+    data_result = extract_mileage_and_price(DATA_FILE)
+    if data_result is None:
+        return
+
+    mileage, price = data_result
 
     params = train_model(mileage, price)
     np.save(MODEL_FILE, params)
