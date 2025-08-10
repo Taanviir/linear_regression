@@ -53,7 +53,7 @@ def gradient_descent(
 def train_model(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     """Train linear regression model."""
 
-    tmp_th0, tmp_th1 = gradient_descent(normalize(x), normalize(y))
+    tmp_th0, tmp_th1 = gradient_descent(standardize(x), standardize(y))
 
     y_std = y.std()
     y_mean = y.mean()
@@ -70,7 +70,7 @@ def train_model(x: np.ndarray, y: np.ndarray) -> np.ndarray:
     return np.array([theta0, theta1])
 
 
-def normalize(data: np.ndarray) -> np.ndarray:
+def standardize(data: np.ndarray) -> np.ndarray:
     """Return normalized data (mean = 0, std = 1)."""
     return (data - data.mean()) / data.std()
 
