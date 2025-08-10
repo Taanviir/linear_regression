@@ -32,12 +32,9 @@ def plot_graph(
     plt.legend()
     plt.tight_layout()
 
-    if save_path is not None:
+    if save_path:
         plt.savefig(save_path)
         print(f"Plot saved to '{save_path}'.")
-    elif mpl.get_backend().lower() == "agg":  # Headless mode
-        out_png = "figure.png"
-        plt.savefig(out_png)
-        print(f"Headless mode detected. Plot saved to '{out_png}'.")
-    else:
+
+    if mpl.get_backend().lower() != "agg":
         plt.show()
